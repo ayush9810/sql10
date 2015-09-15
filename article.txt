@@ -1,0 +1,239 @@
+1)CREATE DATA BASE
+
+mysql> CREATE DATABASE ART;
+
+2)CREATE TABLE USERS
+mysql> CREATE TABLE USERS(u_id int(8) PRIMARY KEY,name varchar(25) NOT NULL,type varchar(25) NOT NULL);
+mysql> DESCRIBE USERS;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| u_id  | int(8)      | NO   | PRI | NULL    |       |
+| name  | varchar(25) | NO   |     | NULL    |       |
+| type  | varchar(25) | NO   |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+
+3)CREATE TABLE CATEGORIES
+mysql> CREATE TABLE CATEGORIES(c_id int(8) PRIMARY KEY,category varchar(25) NOT NULL);
+
+
+mysql> DESCRIBE CATEGORIES;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| c_id     | int(8)      | NO   | PRI | NULL    |       |
+| category | varchar(25) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+4)CREATE TABLE ARTICLES
+
+mysql>  CREATE TABLE ARTICLES(u_id int(8) NOT NULL,a_id int(8) PRIMARY KEY NOT NULL,article varchar(25) NOT NULL,c_id int(8) NOT NULL,FOREIGN KEY(u_id) REFERENCES USERS(u_id),FOREIGN KEY(c_id) REFERENCES CATEGORIES(c_id));
+
+mysql> DESCRIBE ARTICLES;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| u_id    | int(8)      | NO   | MUL | NULL    |       |
+| a_id    | int(8)      | NO   | PRI | NULL    |       |
+| article | varchar(25) | NO   |     | NULL    |       |
+| c_id    | int(8)      | NO   | MUL | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+
+5)CREATE TABLE COMMENTS
+mysql> CREATE TABLE COMMENTS(co_id int(8) PRIMARY KEY NOT NULL,u_id int(8) NOT N
+ULL,a_id int(8) NOT NULL,comment varchar(25) NOT NULL,FOREIGN KEY(u_id) REFERENC
+ES USERS(u_id),FOREIGN KEY(a_id) REFERENCES ARTICLES(a_id));
+
+mysql> DESCRIBE COMMENTS;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| co_id   | int(8)      | NO   | PRI | NULL    |       |
+| u_id    | int(8)      | NO   | MUL | NULL    |       |
+| a_id    | int(8)      | NO   | MUL | NULL    |       |
+| comment | varchar(25) | NO   |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+
+
+6)INSERTING VALUES INTO USERS
+mysql> INSERT INTO USERS
+    -> VALUES
+    -> (1,'mike','admin'),
+    -> (2,'shawn','normal'),
+    -> (3,'angel','normal'),
+    -> (4,'ron','normal'),
+    -> (5,'chris','normmal');
+
+mysql> SELECT * FROM USERS;
++------+-------+---------+
+| u_id | name  | type    |
++------+-------+---------+
+|    1 | mike  | admin   |
+|    2 | shawn | normal  |
+|    3 | angel | normal  |
+|    4 | ron   | normal  |
+|    5 | chris | normmal |
++------+-------+---------+
+
+7)INSERTING VALUES INTO CATEGORY
+mysql> INSERT INTO CATEGORIES
+    -> VALUES
+    -> (1,'nature'),
+    -> (2,'fiction'),
+    -> (3,'career'),
+    -> (4,'art'),
+    -> (5,'science');
+
+mysql> DESCRIBE CATEGORIES;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| c_id     | int(8)      | NO   | PRI | NULL    |       |
+| category | varchar(25) | NO   |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+
+8)INSERTING INTO ARTICLE
+mysql> INSERT INTO ARTICLES
+    -> VALUES
+    -> (1,1,'todays tech',5),
+    -> (2,2,'earth',1),
+    -> (3,3,'dwarf',2),
+    -> (4,4,'engineering',3),
+    -> (5,5,'painting',4),
+    -> (1,6,'agile',5),
+    -> (2,7,'commerce',3),
+    -> (4,8,'tom',2);
+
+
+mysql> SELECT * FROM ARTICLES;
++------+------+-------------+------+
+| u_id | a_id | article     | c_id |
++------+------+-------------+------+
+|    1 |    1 | todays tech |    5 |
+|    2 |    2 | earth       |    1 |
+|    3 |    3 | dwarf       |    2 |
+|    4 |    4 | engineering |    3 |
+|    5 |    5 | painting    |    4 |
+|    1 |    6 | agile       |    5 |
+|    2 |    7 | commerce    |    3 |
+|    4 |    8 | tom         |    2 |
++------+------+-------------+------+ 
+
+9)INSERT INTO COMMENTS
+mysql> INSERT INTO COMMENTS
+    -> VALUES
+    -> (1,2,1,'great'),
+    -> (2,4,3,'nice'),
+    -> (3,5,3,'fabulous story'),
+    -> (4,4,7,'commerce is good option'),
+    -> (5,1,5,'my hobby is painting'),
+    -> (6,3,6,'agile is good tech'),
+    -> (7,3,7,'nice explanation'),
+    -> (8,4,3,'nice ending'),
+    -> (9,2,1,'i am impressed'),
+    -> (10,5,3,'write more stories')
+     -> (11,2,8,'nice'),
+ -> (12,3,8,'cool');
+
+mysql> SELECT * FROM COMMENTS;
++-------+------+------+-------------------------+
+| co_id | u_id | a_id | comment                 |
++-------+------+------+-------------------------+
+|     1 |    2 |    1 | great                   |
+|     2 |    4 |    3 | nice                    |
+|     3 |    5 |    3 | fabulous story          |
+|     4 |    4 |    7 | commerce is good option |
+|     5 |    1 |    5 | my hobby is painting    |
+|     6 |    3 |    6 | agile is good tech      |
+|     7 |    3 |    7 | nice explanation        |
+|     8 |    4 |    3 | nice ending             |
+|     9 |    2 |    1 | i am impressed          |
+|    10 |    5 |    3 | write more stories      |
+|    11 |    2 |    8 | nice                    |
+|    12 |    3 |    8 | cool                    |
++-------+------+------+-------------------------+
+
+SQL QUERIES
+1)select all articles whose author's name is ron
+mysql> SELECT article
+    -> FROM ARTICLES
+    -> WHERE u_id IN
+    -> (SELECT u_id FROM USERS
+    -> WHERE name='ron');
++-------------+
+| article     |
++-------------+
+| engineering |
+| tom         |
++-------------+
+
+2)For all the articles being selected above, select all the articles and also the comments associated with those articles in a single query (Do this using subquery also)
+mysql> SELECT name,article,comment
+    -> from
+    -> USERS left join ARTICLES
+    -> USING(u_id)
+    -> LEFT JOIN COMMENTS
+    -> USING(a_id)
+    -> WHERE USERS.u_id IN
+    -> (
+    -> SELECT u_id FROM USERS
+    -> WHERE name='ron');
++------+-------------+---------+
+| name | article     | comment |
++------+-------------+---------+
+| ron  | engineering | NULL    |
+| ron  | tom         | nice    |
+| ron  | tom         | cool    |
++------+-------------+---------+
+
+3)Write a query to select all articles which do not have any comments (Do using subquery also)
+mysql> SELECT a_id,article
+    -> FROM ARTICLES
+    -> WHERE a_id NOT IN
+    -> (
+    -> SELECT a_id FROM
+    -> COMMENTS
+    -> );
++------+-------------+
+| a_id | article     |
++------+-------------+
+|    2 | earth       |
+|    4 | engineering |
++------+-------------+
+
+
+
+4)Write a query to select article which has maximum comments
+mysql>  SELECT ARTICLES.a_id,COUNT(*),article
+    ->  FROM COMMENTS INNER JOIN ARTICLES
+    ->  USING(a_id)
+    -> GROUP BY ARTICLES.a_id
+    ->  HAVING COUNT(*)=
+    ->   (
+    ->   SELECT COUNT(*)
+    ->   FROM COMMENTS
+    ->   GROUP BY a_id
+    ->   ORDER BY COUNT(*)DESC LIMIT 1);
++------+----------+---------+
+| a_id | COUNT(*) | article |
++------+----------+---------+
+|    3 |        4 | dwarf   |
++------+----------+---------+
+
+6)Write a query to select article which does not have more than one comment by the same user ( do this using left join and group by )
+mysql> SELECT DISTINCT ARTICLES.article
+    -> FROM ARTICLES LEFT JOIN COMMENTS
+    -> USING(a_id)
+    -> GROUP BY ARTICLES.article,COMMENTS.u_id
+    -> HAVING COUNT(*)<2;
++-------------+
+| article     |
++-------------+
+| agile       |
+| commerce    |
+| earth       |
+| engineering |
+| painting    |
+| tom         |
++-------------+
+
